@@ -1,0 +1,54 @@
+<div class="form-group">
+  <select
+    class="form-control"
+    id="regioesSelect"
+    #regioesSelect
+    (change)="onSelectRegiao(regioesSelect.value)">
+    <option [value]="0">Selecione uma região</option>
+    <option *ngFor="let item of regioes" [value]="item.id">
+      {{ item.nome }}
+    </option>
+  </select>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <h6>Estados</h6>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Sigla</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!estados">
+        <tr>
+        <td colspan="4">Nenhuma região selecionada</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr *ngFor="let item of estados" >
+          <td scope="row">{{item.id}}</td>
+          <td>{{item.sigla}}</td>
+          <td>{{item.nome}}</td>
+          <td>
+            <button type="button" class="btn btn-primary" (click)="verCidades(item.id)">Ver cidades</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-6">
+    <h6>Cidades </h6>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of cidades" >
+        {{ item.nome }}
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
