@@ -12,29 +12,19 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   listarRegioes(): Promise<Array<Regiao>> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+      this.http.get('https://servicodados.ibge.gov.br/api/v1/localidades/regioes').subscribe((data: Array<any>) => {
       const regioes: Array<Regiao> = [];
-      for (let index = 0; index < 5; index++) {
-        regioes.push(new Regiao(index, `Região ${index}`));
-      }
-      resolve(regioes);
+        data.forEach(item => {
+          regioes.push(new Regiao(item.id, item.nome));
+        });
+        resolve(regioes);
+      }, (error: any) => {
+        console.error('Ocorreu um erro ');
+        reject(new Erro('123', 'Desculpe, estamos com problema'));
+      });
     });
   }
-
-  // listarRegioes(): Promise<Array<Regiao>> {
-  //   return new Promise((resolve, reject) => {
-  //     this.http.get('https://servicodados.ibge.gov.br/api/v1/localidades/regioes').subscribe((data: Array<any>) => {
-  //     const regioes: Array<Regiao> = [];
-  //       data.forEach(item => {
-  //         regioes.push(new Regiao(item.id, item.nome));
-  //       });
-  //       resolve(regioes);
-  //     }, (error: any) => {
-  //       console.error('Ocorreu um erro ');
-  //       reject(new Erro('123', 'Desculpe, estamos com problema'));
-  //     });
-  //   });
-  // }
 
   listarEstados(regiao: string): Observable<any> {
     return this.http.get(`https://servicodados.ibge.gov.br/api/v1/localidades/regioes/${regiao}/estados`);
